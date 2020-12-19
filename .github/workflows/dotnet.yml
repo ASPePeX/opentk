@@ -10,7 +10,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -18,13 +18,11 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
+    - name: Install OpenGL
+      run: powershell ./install-opengl.ps1
     - name: Tool restore
       run: dotnet tool restore
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: csharp
     - name: Build
-      run: dotnet fake run build.fsx
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+      run: dotnet fake run build.fsx -t RunCITests
+    - name: Uninstall OpenGL
+      run: powershell ./install-opengl.ps1 uninstall
