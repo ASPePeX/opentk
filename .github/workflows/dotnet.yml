@@ -20,5 +20,11 @@ jobs:
         dotnet-version: 3.1.301
     - name: Tool restore
       run: dotnet tool restore
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: csharp
     - name: Build
       run: dotnet fake run build.fsx
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
